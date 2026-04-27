@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Outfit", sans-serif;
+
+  --color-chem-bg: #0a0c10;
+  --color-chem-surface: #141824;
+  --color-chem-border: #2d3748;
+  
+  --color-alkali: #88c057;
+  --color-alkaline: #ffd43b;
+  --color-transition: #ff4d4d;
+  --color-post: #00a8cc;
+  --color-metalloid: #ccff33;
+  --color-reactive: #48dbfb;
+  --color-noble: #d400d4;
+  --color-lanthanide: #ff9f43;
+  --color-actinide: #33cccc;
+
+  /* Block Accents */
+  --color-s-block: #ff6b6b;
+  --color-p-block: #4ecdc4;
+  --color-d-block: #ffbe76;
+  --color-f-block: #a29bfe;
+
+  /* Additional categories for Tailwind classes */
+  --color-reactive-nonmetal: #48dbfb;
+  --color-alkali-metal: #88c057;
+  --color-alkaline-earth: #ffd43b;
+  --color-transition-metal: #ff4d4d;
+  --color-post-transition-metal: #00a8cc;
+  --color-noble-gas: #d400d4;
+
+  /* Glow colors */
+  --glow-alkali: rgba(136, 192, 87, 0.4);
+  --glow-transition: rgba(255, 77, 77, 0.4);
+  --glow-noble: rgba(212, 0, 212, 0.4);
+  --glow-actinide: rgba(51, 204, 204, 0.4);
+}
+
+@layer base {
+  body {
+    @apply bg-chem-bg text-slate-100 font-sans antialiased overflow-hidden;
+  }
+}
+
+.periodic-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.element-cell {
+  aspect-ratio: 1;
+  @apply flex flex-col items-center justify-center rounded-sm border border-white/5 transition-all text-white cursor-pointer hover:scale-125 hover:z-30 shadow-sm relative overflow-hidden;
+}
+
+.element-cell span.num { @apply absolute top-0.5 left-0.5 text-[7px] font-mono leading-none opacity-60; }
+.element-cell span.sym { @apply text-sm font-bold font-mono leading-none; }
+.element-cell span.name { @apply text-[5.5px] font-medium opacity-50 text-center leading-none mt-0.5 truncate w-full px-0.5 hidden lg:block; }
+
+.bg-reactive-nonmetal { background-color: var(--color-reactive-nonmetal); color: black !important; }
+.bg-alkali-metal { background-color: var(--color-alkali-metal); }
+.bg-alkaline-earth { background-color: var(--color-alkaline-earth); }
+.bg-transition-metal { background-color: var(--color-transition-metal); }
+.bg-metalloid { background-color: var(--color-metalloid); color: black !important; }
+.bg-post-transition-metal { background-color: var(--color-post-transition-metal); }
+.bg-noble-gas { background-color: var(--color-noble-gas); }
+.bg-lanthanide { background-color: var(--color-lanthanide); }
+.bg-actinide { background-color: var(--color-actinide); }
+
+.scientific-grid {
+  background-image: 
+    linear-gradient(to right, rgba(20, 24, 36, 0.8), rgba(20, 24, 36, 0.8)),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 30px 30px, 30px 30px;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.floating-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.molecule {
+  position: absolute;
+  border-radius: 50%;
+  animation: float 15s ease-in-out infinite;
+  filter: blur(8px);
+}
+
+.molecule-alkali { @apply bg-alkali opacity-[0.03]; }
+.molecule-transition { @apply bg-transition opacity-[0.03]; }
+.molecule-noble { @apply bg-noble opacity-[0.03]; }
+.molecule-actinide { @apply bg-actinide opacity-[0.03]; }
+
+.glow-actinide { shadow: 0 0 20px var(--glow-actinide); }
+.glow-transition { shadow: 0 0 20px var(--glow-transition); }
+
+.gradient-header {
+  background: linear-gradient(135deg, rgba(20, 24, 36, 1) 0%, rgba(26, 31, 44, 1) 100%);
+  @apply relative overflow-hidden;
+}
+
+.gradient-header::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent;
+}
+
+.high-density-header {
+  @apply h-16 bg-chem-bg text-white flex items-center justify-between px-6 border-b border-white/5 shrink-0;
+}
+
+.high-density-sidebar {
+  @apply w-56 bg-chem-surface border-r border-white/5 p-4 flex flex-col gap-2 shrink-0;
+}
+
+.high-density-footer {
+  @apply h-8 bg-chem-bg border-t border-white/5 px-4 flex items-center justify-between shrink-0;
+}
+
+.card-white {
+  @apply bg-chem-surface border border-white/5 rounded-xl shadow-xl;
+}
+
+.btn-primary {
+  @apply bg-transition hover:bg-transition/80 text-white px-4 py-2 rounded text-xs font-semibold transition-all shadow-lg active:scale-95;
+}
+
+.label-micro {
+  @apply text-[10px] font-bold text-slate-500 uppercase tracking-widest;
+}
